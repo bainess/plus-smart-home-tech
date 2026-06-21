@@ -1,4 +1,4 @@
-package ru.practicum.telemetry.collector.model;
+package ru.practicum.telemetry.collector.model.sensor;
 
 public enum SensorEventType {
     LIGHT_SENSOR_EVENT,
