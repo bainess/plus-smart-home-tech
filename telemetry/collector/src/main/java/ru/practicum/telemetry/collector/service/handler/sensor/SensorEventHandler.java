@@ -1,28 +1,28 @@
 package ru.practicum.telemetry.collector.service.handler.sensor;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.telemetry.collector.configuration.CollectorProducer;
 import ru.practicum.telemetry.collector.model.sensor.SensorEvent;
-import ru.practicum.telemetry.collector.model.sensor.SensorEventType;
-import ru.practicum.telemetry.collector.model.sensor.dto.SensorEventMapper;
+import ru.practicum.telemetry.collector.model.sensor.mapper.SensorEventMapper;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-public class LightSensorEventHandler implements SensorEventHandler {
-
+public class SensorEventHandler {
     private final CollectorProducer producer;
-    private final SensorEventMapper mapper;
+    private final SensorEventMapperRegistry registry;
 
-    @Override
-    public SensorEventType getMessageType() {
-        return SensorEventType.LIGHT_SENSOR_EVENT;
-    }
-
-    @Override
     public void handle(SensorEvent event) {
+        SensorEventMapper mapper = registry.get(event.getType());
+        if (mapper == null) {
+            throw new IllegalStateException("No mapper for type " + event.getType());
+        }
         SensorEventAvro avro = mapper.toAvro(event);
+
+        log.info("INFO SENT TO KAFKA {}", avro);
         producer.sendSensorEvent(avro);
     }
 }

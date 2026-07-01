@@ -1,8 +1,8 @@
-package ru.practicum.telemetry.collector.model.sensor.dto;
+package ru.practicum.telemetry.collector.model.sensor.mapper;
 
 import org.springframework.stereotype.Component;
 import ru.practicum.telemetry.collector.model.sensor.MotionSensorEvent;
-import ru.practicum.telemetry.collector.model.sensor.SensorEvent;
+import ru.practicum.telemetry.collector.model.sensor.SensorEventType;
 import ru.yandex.practicum.kafka.telemetry.event.MotionSensorAvro;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
 
@@ -10,7 +10,13 @@ import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
 public class MotionSensorEventMapper implements SensorEventMapper<MotionSensorEvent>{
 
     @Override
+    public SensorEventType getType() {
+        return SensorEventType.MOTION_SENSOR_EVENT;
+    }
+
+    @Override
     public SensorEventAvro toAvro(MotionSensorEvent event) {
+
         MotionSensorAvro payload = MotionSensorAvro.newBuilder()
                 .setLinkQuality(event.getLinkQuality())
                 .setMotion(event.isMotion())

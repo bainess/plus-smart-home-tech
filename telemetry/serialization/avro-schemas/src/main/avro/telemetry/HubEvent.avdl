@@ -55,7 +55,7 @@ protocol HubEventProtocol {
 
 	record ScenarioAddedEventAvro{
 		string name;
-		array<ScenarioConditionAvro> conditons;
+		array<ScenarioConditionAvro> conditions;
 		array<DeviceActionAvro> actions;
 	}
 

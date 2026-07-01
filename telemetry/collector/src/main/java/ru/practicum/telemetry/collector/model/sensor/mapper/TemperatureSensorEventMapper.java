@@ -1,12 +1,18 @@
-package ru.practicum.telemetry.collector.model.sensor.dto;
+package ru.practicum.telemetry.collector.model.sensor.mapper;
 
 import org.springframework.stereotype.Component;
+import ru.practicum.telemetry.collector.model.sensor.SensorEventType;
 import ru.practicum.telemetry.collector.model.sensor.TemperatureSensorEvent;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.TemperatureSensorAvro;
 
 @Component
 public class TemperatureSensorEventMapper implements SensorEventMapper<TemperatureSensorEvent> {
+    @Override
+    public SensorEventType getType() {
+        return SensorEventType.TEMPERATURE_SENSOR_EVENT;
+    }
+
     @Override
     public SensorEventAvro toAvro(TemperatureSensorEvent event) {
         TemperatureSensorAvro payload = TemperatureSensorAvro.newBuilder()

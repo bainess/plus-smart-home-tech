@@ -1,11 +1,28 @@
 package ru.practicum.telemetry.collector.service.handler.hub;
 
-import ru.practicum.telemetry.collector.model.hub.HubEventType;
-import ru.practicum.telemetry.collector.model.sensor.SensorEvent;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import ru.practicum.telemetry.collector.configuration.CollectorProducer;
+import ru.practicum.telemetry.collector.model.hub.HubEvent;
+import ru.practicum.telemetry.collector.model.hub.mapper.HubEventMapper;
+import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
 
-public interface HubEventHandler {
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class HubEventHandler {
+    private final CollectorProducer producer;
+    private final HubEventMapperRegistry registry;
 
-    HubEventType getMessageType();
+    public void handle(HubEvent event) {
+        HubEventMapper mapper = registry.get(event.getType());
+        if (mapper == null) {
+            throw new IllegalStateException("No mapper for type " + event.getType());
+        }
 
-    void handle(SensorEvent event);
+        HubEventAvro avro = mapper.toAvro(event);
+        log.info("Hub info sent to KAFKA {}", avro);
+        producer.sendHubEvent(avro);
+    }
 }
