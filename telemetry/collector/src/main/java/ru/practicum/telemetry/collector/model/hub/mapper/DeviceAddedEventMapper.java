@@ -18,7 +18,7 @@ public class DeviceAddedEventMapper implements HubEventMapper<DeviceAddedEvent> 
     public HubEventAvro toAvro(DeviceAddedEvent event) {
         DeviceAddedEventAvro payload = DeviceAddedEventAvro.newBuilder()
                 .setId(event.getId())
-                .setType(DeviceTypeAvro.valueOf(event.getDeviceType().name()))
+                .setType(DeviceTypeAvro.valueOf(event.getType().name()))
                 .build();
 
         return HubEventAvro.newBuilder()

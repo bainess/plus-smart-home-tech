@@ -12,27 +12,19 @@ import java.util.Properties;
 
 @Configuration
 public class KafkaProducerConfig {
-        private Producer<String, SpecificRecordBase> producer;
+
     @Bean
-    public Producer<String, SpecificRecordBase> getProducer() {
-        if (producer == null) {
-            initProducer();
-        }
-        return producer;
-    }
-
-    private void initProducer(){
+    public Producer<String, SpecificRecordBase> producer() {
         Properties config = new Properties();
-
         config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "ru.practicum.telemetry.collector.configuration.AvroSerializer");
-        producer = new KafkaProducer<>(config);
-    }
-
-    public void stop() {
-        if (producer != null) {
-            producer.close();
-        }
+        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
+                AvroSerializer.class.getName());
+        // Fix: Add these for better performance
+        config.put(ProducerConfig.ACKS_CONFIG, "all");
+        config.put(ProducerConfig.RETRIES_CONFIG, 3);
+        config.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384);
+        config.put(ProducerConfig.LINGER_MS_CONFIG, 10);
+        return new KafkaProducer<>(config);
     }
 }

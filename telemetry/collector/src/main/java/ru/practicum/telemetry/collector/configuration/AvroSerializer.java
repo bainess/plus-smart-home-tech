@@ -17,27 +17,23 @@ public class AvroSerializer implements Serializer<SpecificRecordBase> {
 
     private final EncoderFactory encoderFactory = EncoderFactory.get();
 
-
     @Override
     public byte[] serialize(String topic, SpecificRecordBase data) {
-        if (data == null) {
-            return null;
-        }
+        if (data == null) return null;
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            BinaryEncoder encoder =
-                    EncoderFactory.get().binaryEncoder(out, null);
+            BinaryEncoder encoder = encoderFactory.binaryEncoder(out, null);
 
-            DatumWriter<SpecificRecordBase> writer =
-                    new SpecificDatumWriter<>(data.getSchema());
+            DatumWriter<SpecificRecordBase> writer = new SpecificDatumWriter<>(data.getSchema());
 
             writer.write(data, encoder);
             encoder.flush();
 
             return out.toByteArray();
-        } catch (IOException e) {
+
+        } catch (IOException ex) {
             throw new SerializationException(
-                    "Ошибка сериализации данных для топика [" + topic + "]", e);
+                    "Ошибка сериализации данных для топика [" + topic + "]", ex);
         }
     }
 }

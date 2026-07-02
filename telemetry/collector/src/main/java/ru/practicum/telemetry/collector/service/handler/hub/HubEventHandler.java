@@ -22,7 +22,7 @@ public class HubEventHandler {
         }
 
         HubEventAvro avro = mapper.toAvro(event);
-        log.info("Hub info sent to KAFKA {}", avro);
+        log.info("HUB info sent to KAFKA {}", avro);
         producer.sendHubEvent(avro);
     }
 }
