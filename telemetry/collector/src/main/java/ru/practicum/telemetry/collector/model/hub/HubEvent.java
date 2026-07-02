@@ -27,8 +27,6 @@ public abstract class HubEvent {
     private String hubId;
     private Instant timestamp;
     private String type;
-//    private String id;
-//    private String deviceType;
 
     public abstract HubEventType getType();
 }
