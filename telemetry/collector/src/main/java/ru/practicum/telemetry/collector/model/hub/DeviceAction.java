@@ -7,10 +7,10 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString(callSuper = true)
-public class DeviceAction extends HubEvent{
+public class DeviceAction {
     private String sensorId;
-    private ActionType actionType;
+    private ActionType type;
     private Integer value;
 
-    public HubEventType getType() { return HubEventType.DEVICE_ACTION;};
+    //public HubEventType getType() { return HubEventType.DEVICE_ACTION;};
 }

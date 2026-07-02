@@ -43,9 +43,8 @@ public class ScenarioAddedEventMapper implements HubEventMapper<ScenarioAddedEve
         return DeviceActionAvro.newBuilder()
                 .setSensorId(action.getSensorId())
                 .setType(
-                        ActionTypeAvro.valueOf(
-                                action.getActionType().name()
-                        )
+                        ActionTypeAvro.valueOf(action.getType().name())
+
                 )
                 .setValue(action.getValue())
                 .build();
