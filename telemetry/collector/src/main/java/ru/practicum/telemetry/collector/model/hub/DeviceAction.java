@@ -12,5 +12,5 @@ public class DeviceAction {
     private ActionType type;
     private Integer value;
 
-    //public HubEventType getType() { return HubEventType.DEVICE_ACTION;};
+    public HubEventType getType() { return HubEventType.DEVICE_ACTION;};
 }
