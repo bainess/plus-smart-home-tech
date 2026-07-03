@@ -11,6 +11,4 @@ public class DeviceAction {
     private String sensorId;
     private ActionType type;
     private Integer value;
-
-    //public HubEventType getType() { return HubEventType.DEVICE_ACTION;};
 }
