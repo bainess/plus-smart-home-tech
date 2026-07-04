@@ -1,7 +1,6 @@
 package ru.practicum.telemetry.collector.controller;
 
 import com.google.protobuf.Empty;
-import com.google.protobuf.util.JsonFormat;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
