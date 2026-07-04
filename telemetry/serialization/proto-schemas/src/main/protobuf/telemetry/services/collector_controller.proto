@@ -1,11 +1,20 @@
+syntax = "proto3";
 package telemetry.service.collector;
 
 import "telemetry/messages/sensor_event.proto";
 import "telemetry/messages/hub_event.proto";
+import "google/protobuf/empty.proto";
 
 option java_package = "ru.yandex.practicum.grpc.telemetry.collector";
 option java_multiple_files = true;
 
 service CollectorController{
+  rpc CollectSensorEvent(telemetry.message.event.SensorEventProto) returns (CollectorResponse);
+}
 
+message CollectorRequest {
+  string message = 1;
+}
+message CollectorResponse {
+  string message = 1;
 }
