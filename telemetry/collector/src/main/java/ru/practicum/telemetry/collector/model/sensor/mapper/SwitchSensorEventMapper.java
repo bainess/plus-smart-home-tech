@@ -3,8 +3,11 @@ package ru.practicum.telemetry.collector.model.sensor.mapper;
 import org.springframework.stereotype.Component;
 import ru.practicum.telemetry.collector.model.sensor.SensorEventType;
 import ru.practicum.telemetry.collector.model.sensor.SwitchSensorEvent;
+import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.SwitchSensorAvro;
+
+import java.time.Instant;
 
 @Component
 public class SwitchSensorEventMapper implements SensorEventMapper<SwitchSensorEvent> {
@@ -14,15 +17,15 @@ public class SwitchSensorEventMapper implements SensorEventMapper<SwitchSensorEv
     }
 
     @Override
-    public SensorEventAvro toAvro(SwitchSensorEvent event) {
+    public SensorEventAvro toAvro(SensorEventProto event) {
 
         SwitchSensorAvro payload = SwitchSensorAvro.newBuilder()
-                .setState(event.isState())
+                .setState(event.getSwitchSensor().getState())
                 .build();
         return SensorEventAvro.newBuilder()
                 .setId(event.getId())
                 .setHubId(event.getHubId())
-                .setTimestamp(event.getTimestamp())
+                .setTimestamp(Instant.ofEpochSecond(event.getTimestamp().getSeconds()))
                 .setPayload(payload)
                 .build();
     }

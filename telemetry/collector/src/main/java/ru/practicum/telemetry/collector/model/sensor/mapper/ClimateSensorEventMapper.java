@@ -3,8 +3,11 @@ package ru.practicum.telemetry.collector.model.sensor.mapper;
 import org.springframework.stereotype.Component;
 import ru.practicum.telemetry.collector.model.sensor.ClimateSensorEvent;
 import ru.practicum.telemetry.collector.model.sensor.SensorEventType;
+import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
 import ru.yandex.practicum.kafka.telemetry.event.ClimateSensorAvro;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
+
+import java.time.Instant;
 
 @Component
 public class ClimateSensorEventMapper implements SensorEventMapper<ClimateSensorEvent> {
@@ -14,18 +17,18 @@ public class ClimateSensorEventMapper implements SensorEventMapper<ClimateSensor
     }
 
     @Override
-    public SensorEventAvro toAvro(ClimateSensorEvent event) {
+    public SensorEventAvro toAvro(SensorEventProto event) {
 
         ClimateSensorAvro payload = ClimateSensorAvro.newBuilder()
-                .setCo2Level(event.getCo2Level())
-                .setHumidity(event.getHumidity())
-                .setTemperatureC(event.getTemperatureC())
+                .setCo2Level(event.getClimateSensor().getCo2Level())
+                .setHumidity(event.getClimateSensor().getHumidity())
+                .setTemperatureC(event.getClimateSensor().getTemperatureC())
                 .build();
 
         return SensorEventAvro.newBuilder()
                 .setId(event.getId())
                 .setHubId(event.getHubId())
-                .setTimestamp(event.getTimestamp())
+                .setTimestamp(Instant.ofEpochMilli(event.getTimestamp().getSeconds()))
                 .setPayload(payload)
                 .build();
     }

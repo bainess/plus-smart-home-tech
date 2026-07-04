@@ -1,12 +1,17 @@
 package ru.practicum.telemetry.collector.model.sensor.mapper;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.practicum.telemetry.collector.model.sensor.LightSensorEvent;
 import ru.practicum.telemetry.collector.model.sensor.SensorEventType;
+import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
 import ru.yandex.practicum.kafka.telemetry.event.LightSensorAvro;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
 
+import java.time.Instant;
+
 @Component
+@RequiredArgsConstructor
 public class LightSensorEventMapper implements SensorEventMapper<LightSensorEvent> {
 
     @Override
@@ -15,18 +20,18 @@ public class LightSensorEventMapper implements SensorEventMapper<LightSensorEven
     }
 
     @Override
-    public SensorEventAvro toAvro(LightSensorEvent event) {
+    public SensorEventAvro toAvro(SensorEventProto event) {
 
 
         LightSensorAvro payload = LightSensorAvro.newBuilder()
-                .setLinkQuality(event.getLinkQuality())
-                .setLuminosity(event.getLuminosity())
+                .setLinkQuality(event.getLightSensor().getLinkQuality())
+                .setLuminosity(event.getLightSensor().getLuminosity())
                 .build();
 
         return SensorEventAvro.newBuilder()
                 .setId(event.getId())
                 .setHubId(event.getHubId())
-                .setTimestamp(event.getTimestamp())
+                .setTimestamp(Instant.ofEpochSecond(event.getTimestamp().getSeconds()))
                 .setPayload(payload)
                 .build();
     }
