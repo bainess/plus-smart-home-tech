@@ -10,4 +10,5 @@ option java_multiple_files = true;
 
 service CollectorController{
   rpc CollectSensorEvent(telemetry.message.event.SensorEventProto) returns (google.protobuf.Empty);
+  rpc CollectHubEvent(telemetry.message.event.HubEventProto) returns (google.protobuf.Empty);
 }

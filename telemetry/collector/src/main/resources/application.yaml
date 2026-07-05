@@ -12,3 +12,7 @@ spring:
 logging:
   level:
     org.apache.kafka: INFO
+
+grpc:
+  server:
+    port: 59091

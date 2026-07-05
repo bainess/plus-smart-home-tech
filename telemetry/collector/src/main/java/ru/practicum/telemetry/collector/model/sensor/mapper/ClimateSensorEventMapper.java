@@ -28,7 +28,7 @@ public class ClimateSensorEventMapper implements SensorEventMapper<ClimateSensor
         return SensorEventAvro.newBuilder()
                 .setId(event.getId())
                 .setHubId(event.getHubId())
-                .setTimestamp(Instant.ofEpochMilli(event.getTimestamp().getSeconds()))
+                .setTimestamp(Instant.ofEpochSecond(event.getTimestamp().getSeconds(), event.getTimestamp().getNanos()))
                 .setPayload(payload)
                 .build();
     }

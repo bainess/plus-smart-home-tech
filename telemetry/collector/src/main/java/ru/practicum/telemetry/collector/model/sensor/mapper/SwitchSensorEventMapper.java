@@ -22,10 +22,11 @@ public class SwitchSensorEventMapper implements SensorEventMapper<SwitchSensorEv
         SwitchSensorAvro payload = SwitchSensorAvro.newBuilder()
                 .setState(event.getSwitchSensor().getState())
                 .build();
+
         return SensorEventAvro.newBuilder()
                 .setId(event.getId())
                 .setHubId(event.getHubId())
-                .setTimestamp(Instant.ofEpochSecond(event.getTimestamp().getSeconds()))
+                .setTimestamp(Instant.ofEpochSecond(event.getTimestamp().getSeconds(), event.getTimestamp().getNanos()))
                 .setPayload(payload)
                 .build();
     }

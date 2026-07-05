@@ -3,8 +3,11 @@ package ru.practicum.telemetry.collector.model.hub.mapper;
 import org.springframework.stereotype.Component;
 import ru.practicum.telemetry.collector.model.hub.HubEventType;
 import ru.practicum.telemetry.collector.model.hub.ScenarioRemovedEvent;
+import ru.yandex.practicum.grpc.telemetry.event.HubEventProto;
 import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.ScenarioRemovedEventAvro;
+
+import java.time.Instant;
 
 @Component
 public class ScenarioRemovedEventMapper implements HubEventMapper<ScenarioRemovedEvent> {
@@ -14,14 +17,14 @@ public class ScenarioRemovedEventMapper implements HubEventMapper<ScenarioRemove
     }
 
     @Override
-    public HubEventAvro toAvro(ScenarioRemovedEvent event) {
+    public HubEventAvro toAvro(HubEventProto event) {
         ScenarioRemovedEventAvro payload = ScenarioRemovedEventAvro.newBuilder()
-                .setName(event.getName())
+                .setName(event.getScenarioRemoved().getName())
                 .build();
 
         return HubEventAvro.newBuilder()
                 .setHubId(event.getHubId())
-                .setTimestamp(event.getTimestamp())
+                .setTimestamp(Instant.ofEpochSecond(event.getTimestamp().getSeconds(), event.getTimestamp().getNanos()))
                 .setPayload(payload)
                 .build();
     }
