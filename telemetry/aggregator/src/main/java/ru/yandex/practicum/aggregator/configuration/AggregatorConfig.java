@@ -1,7 +1,6 @@
 package ru.yandex.practicum.aggregator.configuration;
 
 import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
-import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.specific.SpecificRecordBase;
@@ -15,13 +14,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.aggregator.configuration.deserializer.SensorEventDeserializer;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
-import ru.yandex.practicum.kafka.telemetry.event.SensorsSnapshotAvro;
 import telemetry.AvroSerializer;
 
 import java.util.Properties;
 
 @Slf4j
-@Setter
 @Component
 public class AggregatorConfig {
     @Bean
