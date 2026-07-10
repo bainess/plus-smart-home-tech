@@ -16,6 +16,23 @@
     <modules>
         <module>avro-schemas</module>
         <module>proto-schemas</module>
+        <module>kafka-serializer</module>
     </modules>
+
+    <dependencies>
+
+    <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+    </dependency>
+
+        <dependency>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-avro-serializer</artifactId>
+            <version>7.5.15</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
 
 </project>

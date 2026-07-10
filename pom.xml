@@ -15,12 +15,17 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <repositories>
+        <repository>
+            <id>confluent</id>
+            <url>https://packages.confluent.io/maven/</url>
+        </repository>
+    </repositories>
+
     <modules>
         <module>telemetry</module>
         <module>infra</module>
         <module>commerce</module>
-        <module>telemetry/aggregator</module>
-        <module>telemetry/aggregator</module>
     </modules>
 
     <properties>
