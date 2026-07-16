@@ -17,12 +17,13 @@ import java.util.List;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class SnapshotProcessor implements Runnable{
     private static final String SNAPSHOT_TOPICS = "telemetry.snapshots.v1";
-
-    @Qualifier("snapshotConsumer")
     private final KafkaConsumer<String, SpecificRecordBase> consumer;
+    public SnapshotProcessor(@Qualifier("snapshotConsumer")
+                             KafkaConsumer<String, SpecificRecordBase> consumer) {
+        this.consumer = consumer;
+    }
 
     @Override
     public void run() {
@@ -37,8 +38,8 @@ public class SnapshotProcessor implements Runnable{
                     SensorsSnapshotAvro snapshot = (SensorsSnapshotAvro) record.value();
 
                 }
+                consumer.commitSync();
             }
-          //  consumer.commitSync();
         } catch (WakeupException e) {
 
         } catch (Exception e) {

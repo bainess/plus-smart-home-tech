@@ -21,19 +21,20 @@ public class AnalyzerConfiguration {
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
                 SnapshotDeserializer.class);
-        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost: 9092");
+        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 
         return new KafkaConsumer<>(config);
     }
 
+    @Bean
     public KafkaConsumer<String, SpecificRecordBase> hubConsumer() {
         Properties config = new Properties();
         config.put(ConsumerConfig.GROUP_ID_CONFIG, "hub_analyzer");
         config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-                SnapshotDeserializer.class);
-        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost: 9092");
+                HubEventDeserializer.class);
+        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 
         return new KafkaConsumer<>(config);
     }

@@ -1,16 +1,32 @@
 package ru.yandex.practicum.analyzer.model;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
+import jakarta.persistence.*;
+import lombok.*;
 
 @Setter
 @Getter
-@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "scenario_conditions")
+@Builder
 public class ScenarioCondition {
-    private String sensorId;
-    private ConditionType type;
-    private ConditionOperation operation;
-    private Object value;
+
+    @EmbeddedId
+    private ScenarioConditionId id;
+
+    @ManyToOne
+    @MapsId("scenarioId")
+    @JoinColumn(name = "scenario_id")
+    private Scenario scenario;
+
+    @ManyToOne
+    @MapsId("conditionId")
+    @JoinColumn(name = "condition_id")
+    private Condition condition;
+
+    @ManyToOne
+    @MapsId("sensorId")
+    @JoinColumn(name = "sensor_id")
+    private Sensor sensor;
 }

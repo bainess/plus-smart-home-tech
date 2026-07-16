@@ -1,25 +1,27 @@
-grpc:
-  client:
-    hub-router:
-      address: 'static://localhost:59090'
-      enableKeepAlive: true
-      keepAliveWithoutCalls: true
-      negotiationType: plaintext
+  grpc:
+    client:
+      hub-router:
+        address: 'static://localhost:59090'
+        enableKeepAlive: true
+        keepAliveWithoutCalls: true
+        negotiationType: plaintext
 
-spring:
-  application:
-    name: analyzer
-  datasource:
-    url: jdbc:postgresql://localhost:5433/analyzer
-    username: postgres
-    password: 54321
-    driver-class-name: org.postgresql.Driver
-  sql:
-    init:
-      mode: always
-      continue-on-error: true
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+  spring:
+    application:
+      name: analyzer
+    datasource:
+      url: jdbc:postgresql://analyzer-db:5432/analyzer_db
+      username: postgres
+      password: 12345
+      driver-class-name: org.postgresql.Driver
+    sql:
+      init:
+        mode: always
+        continue-on-error: true
+    jpa:
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+      hibernate:
+        ddl-auto: update
+      show-sql: true
+    kafka:
+      bootstrap-servers: kafka:9092

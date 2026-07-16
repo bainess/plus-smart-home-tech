@@ -9,19 +9,30 @@
     import org.apache.kafka.common.errors.WakeupException;
     import org.springframework.beans.factory.annotation.Qualifier;
     import org.springframework.stereotype.Component;
+    import ru.yandex.practicum.analyzer.service.HubEventService;
+    import ru.yandex.practicum.kafka.telemetry.event.DeviceAddedEventAvro;
+    import ru.yandex.practicum.kafka.telemetry.event.DeviceRemovedEventAvro;
     import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
+    import ru.yandex.practicum.kafka.telemetry.event.ScenarioAddedEventAvro;
 
     import java.time.Duration;
     import java.util.List;
 
     @Slf4j
     @Component
-    @RequiredArgsConstructor
+
     public class HubEventProcessor implements Runnable{
         private static final String HUB_TOPICS = "telemetry.hubs.v1";
-
         @Qualifier("hubConsumer")
         private final KafkaConsumer<String, SpecificRecordBase> consumer;
+        private final HubEventService hubEventService;
+
+        public HubEventProcessor(
+                @Qualifier("hubConsumer")
+                KafkaConsumer<String, SpecificRecordBase> consumer, HubEventService hubEventService) {
+            this.consumer = consumer;
+            this.hubEventService = hubEventService;
+        }
 
         @Override
         public void run() {
@@ -34,9 +45,28 @@
 
                     for (ConsumerRecord<String, SpecificRecordBase> record : records ) {
                         HubEventAvro event = (HubEventAvro) record.value();
+                        Object payload = event.getPayload();
+                        if (payload instanceof DeviceAddedEventAvro deviceAdded) {
+                            log.info("EventReceived - {}", deviceAdded);
+                            hubEventService.addSensor(event);
+                        }
+                        if (payload instanceof DeviceRemovedEventAvro deviceRemoved) {
+                            log.info("EventReceived - {}", deviceRemoved);
+                            hubEventService.removeSensor(event);
+                        }
+
+                        if (payload instanceof ScenarioAddedEventAvro scenarioAdded) {
+                            log.info("EventReceived - {}", scenarioAdded);
+                            hubEventService.addScenario(event);
+                        }
+
+                        if (payload instanceof ScenarioAddedEventAvro scenarioRemoved) {
+                            log.info("EventReceived - {}", scenarioRemoved);
+                            hubEventService.removeScenario(event);
+                        }
                     }
+                    consumer.commitSync();
                 }
-                // consumer.commitSync();
             } catch (WakeupException e) {
 
             } catch (Exception e) {

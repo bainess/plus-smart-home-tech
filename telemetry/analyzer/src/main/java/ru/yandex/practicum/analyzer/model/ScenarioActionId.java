@@ -1,0 +1,19 @@
+package ru.yandex.practicum.analyzer.model;
+
+import jakarta.persistence.Embeddable;
+import lombok.*;
+
+import java.io.Serializable;
+
+@Embeddable
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+public class ScenarioActionId implements Serializable {
+
+    private Long scenario;
+    private String sensor;
+    private Action action;
+}

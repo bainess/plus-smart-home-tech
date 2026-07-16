@@ -1,0 +1,25 @@
+grpc:
+  client:
+    hub-router:
+      address: 'static://localhost:59090'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+
+spring:
+  application:
+    name: analyzer
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: postgres
+    password: 12345
+    driver-class-name: org.h2.Driver
+  sql:
+    init:
+      mode: always
+      continue-on-error: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true

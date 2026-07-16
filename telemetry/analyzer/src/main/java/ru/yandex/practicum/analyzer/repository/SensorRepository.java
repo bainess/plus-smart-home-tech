@@ -1,7 +1,8 @@
 package ru.yandex.practicum.analyzer.repository;
 
-import org.apache.kafka.common.metrics.Sensor;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import ru.yandex.practicum.analyzer.model.Sensor;
 
 import java.util.Collection;
 import java.util.Optional;
