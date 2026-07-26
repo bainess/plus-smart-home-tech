@@ -20,8 +20,8 @@ public class ScenarioCondition {
     @JoinColumn(name = "scenario_id")
     private Scenario scenario;
 
-    @ManyToOne
-    @MapsId("conditionId")
+    @ManyToOne(cascade = CascadeType.ALL)
+      @MapsId("conditionId")
     @JoinColumn(name = "condition_id")
     private Condition condition;
 

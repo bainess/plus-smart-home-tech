@@ -1,32 +1,31 @@
 package ru.yandex.practicum.analyzer.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "scenario_actions")
-@IdClass(ScenarioActionId.class)
 @Builder
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class ScenarioAction {
 
-    @Id
+    @EmbeddedId
+    private ScenarioActionId id;
+
     @ManyToOne
+    @MapsId("scenarioId")
     @JoinColumn(name = "scenario_id")
     private Scenario scenario;
 
-    @Id
     @ManyToOne
+    @MapsId("sensorId")
     @JoinColumn(name = "sensor_id")
     private Sensor sensor;
 
-    @Id
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "action_id")
     private Action action;
 }

@@ -9,6 +9,8 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.errors.WakeupException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.analyzer.service.ScenarioService;
+import ru.yandex.practicum.analyzer.service.SnapshotService;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.SensorsSnapshotAvro;
 
@@ -20,9 +22,15 @@ import java.util.List;
 public class SnapshotProcessor implements Runnable{
     private static final String SNAPSHOT_TOPICS = "telemetry.snapshots.v1";
     private final KafkaConsumer<String, SpecificRecordBase> consumer;
+    private final ScenarioService scenarioService;
+    private final SnapshotService snapshotService;
     public SnapshotProcessor(@Qualifier("snapshotConsumer")
-                             KafkaConsumer<String, SpecificRecordBase> consumer) {
+                             KafkaConsumer<String, SpecificRecordBase> consumer,
+                             ScenarioService scenarioService,
+                             SnapshotService snapshotService) {
         this.consumer = consumer;
+        this.scenarioService = scenarioService;
+        this.snapshotService = snapshotService;
     }
 
     @Override
@@ -33,9 +41,13 @@ public class SnapshotProcessor implements Runnable{
             while (true) {
                 ConsumerRecords<String, SpecificRecordBase> records =
                         consumer.poll(Duration.ofMillis(500));
-
                 for (ConsumerRecord<String, SpecificRecordBase> record : records) {
+                    log.info("Record received {}", record);
                     SensorsSnapshotAvro snapshot = (SensorsSnapshotAvro) record.value();
+                    log.info("Snapshot received {}", snapshot);
+
+                    snapshotService.updateSnapshot(snapshot);
+                    scenarioService.applyScenario(snapshot.getHubId());
 
                 }
                 consumer.commitSync();

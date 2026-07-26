@@ -10,28 +10,29 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(
-        name = "scenarios"
-)
+@Table(name = "scenarios")
 @Builder
 public class Scenario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "hub_id", nullable = false)
     private String hubId;
 
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "scenario",
     cascade = CascadeType.ALL,
-    orphanRemoval = true)
+    orphanRemoval = true,
+    fetch = FetchType.LAZY)
     private List<ScenarioAction> actions;
 
     @OneToMany(mappedBy = "scenario",
-    cascade = CascadeType.ALL,
-    orphanRemoval = true)
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+    fetch = FetchType.LAZY)
     private List<ScenarioCondition> conditions;
 }

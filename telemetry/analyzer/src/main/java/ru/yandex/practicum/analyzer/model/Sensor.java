@@ -13,6 +13,7 @@ import lombok.*;
 @Table(name = "sensors")
 @Entity
 @Builder
+@ToString
 public class Sensor {
 
     @Id

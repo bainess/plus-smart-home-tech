@@ -1,19 +1,22 @@
 package ru.yandex.practicum.analyzer.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.EmbeddedId;
 import lombok.*;
 
 import java.io.Serializable;
 
 @Embeddable
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 public class ScenarioActionId implements Serializable {
 
-    private Long scenario;
-    private String sensor;
-    private Action action;
+    @Column(name = "scenario_id")
+    private Long scenarioId;
+
+    @Column(name = "sensor_id")
+    private String sensorId;
 }

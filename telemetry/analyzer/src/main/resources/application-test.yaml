@@ -1,25 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/analyzer_db
+    username: postgres
+    password: 12345
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
 grpc:
   client:
     hub-router:
-      address: 'static://localhost:59090'
+      address: static://localhost:59090
+      negotiationType: plaintext
       enableKeepAlive: true
       keepAliveWithoutCalls: true
-      negotiationType: plaintext
 
-spring:
-  application:
-    name: analyzer
-  datasource:
-    url: jdbc:h2:mem:testdb
-    username: postgres
-    password: 12345
-    driver-class-name: org.h2.Driver
-  sql:
-    init:
-      mode: always
-      continue-on-error: true
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+logging:
+  level:
+    com.zaxxer.hikari: DEBUG
