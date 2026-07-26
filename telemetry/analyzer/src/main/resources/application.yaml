@@ -11,7 +11,7 @@ spring:
     name: analyzer
 
   datasource:
-    url: jdbc:postgresql://analyzer-db:5432/analyzer_db
+    url: ${ANALYZER_POSTGRES_URL:jdbc:postgresql://localhost:5433/smarthome}
     username: postgres
     password: 12345
     driver-class-name: org.postgresql.Driver
