@@ -20,14 +20,6 @@ public class HubRouter {
     @GrpcClient("hub-router")
     private HubRouterControllerGrpc.HubRouterControllerBlockingStub hubRouterStub;
 
-    //    public HubRouter( String actionHandlerAddress) {
-    //        String target = actionHandlerAddress.replace("static://", "");
-    //        ManagedChannel channel = ManagedChannelBuilder.forTarget(target)
-    //                .usePlaintext()
-    //                .build();
-    //        this.hubRouterStub = HubRouterControllerGrpc.newBlockingStub(channel);
-    //    }
-
     public void handleDeviceAction(String hubId, String scenarioName, String sensorId, Action action, Instant timestamp) {
         ActionTypeProto protoType = ActionTypeProto.valueOf(action.getType().name());
 

@@ -1,6 +1,5 @@
 package ru.yandex.practicum.analyzer.processor;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.analyzer.service.ScenarioService;
 import ru.yandex.practicum.analyzer.service.SnapshotService;
-import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.SensorsSnapshotAvro;
 
 import java.time.Duration;
@@ -19,11 +17,12 @@ import java.util.List;
 
 @Slf4j
 @Component
-public class SnapshotProcessor implements Runnable{
+public class SnapshotProcessor implements Runnable {
     private static final String SNAPSHOT_TOPICS = "telemetry.snapshots.v1";
     private final KafkaConsumer<String, SpecificRecordBase> consumer;
     private final ScenarioService scenarioService;
     private final SnapshotService snapshotService;
+
     public SnapshotProcessor(@Qualifier("snapshotConsumer")
                              KafkaConsumer<String, SpecificRecordBase> consumer,
                              ScenarioService scenarioService,

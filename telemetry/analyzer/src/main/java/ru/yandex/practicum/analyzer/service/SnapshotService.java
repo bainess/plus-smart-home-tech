@@ -12,8 +12,6 @@ import java.util.Map;
 @Service
 @Slf4j
 public class SnapshotService {
-//    @GrpcClient("hub-router")
-//    private HubRouterControllerGrpc.HubRouterControllerBlockingStub hubRouterClient;
     private final Map<String, SensorsSnapshotAvro> snapshots;
 
     public SnapshotService() {

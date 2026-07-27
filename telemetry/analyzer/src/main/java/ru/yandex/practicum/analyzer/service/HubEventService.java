@@ -22,10 +22,6 @@ public class HubEventService {
 
     private final SensorRepository sensorRepository;
     private final ScenarioRepository scenarioRepository;
-    //  private final ConditionRepository conditionRepository;
-    //  private final ActionRepository actionRepository;
-    //  @GrpcClient("hub-router")
-    // private HubRouterControllerBlockingStub hubRouterClient;
     private final ScenarioMapper scenarioMapper;
 
     public Sensor addSensor(HubEventAvro hubEvent) {
