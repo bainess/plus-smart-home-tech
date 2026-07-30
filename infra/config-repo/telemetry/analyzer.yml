@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url:  jdbc:postgresql://localhost:5433/analyzer_db
+    username: postgres
+    password: 12345
+    driver-class-name: org.postgresql.Driver
+  sql:
+    init:
+      mode: never
+      continue-on-error: true
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  kafka:
+    bootstrap-servers: localhost:9092
+
+grpc:
+  client:
+    hub-router:
+      address: 'discovery:///hub-router'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+
