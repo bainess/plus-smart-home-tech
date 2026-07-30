@@ -13,12 +13,17 @@
 
     <dependencies>
 
-<!--   Spring Cloud Client     -->
+        <!--   Spring Cloud Client     -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
 
+        <!--        Discover Client -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>ru.yandex.practicum</groupId>
