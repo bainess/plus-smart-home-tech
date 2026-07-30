@@ -1,0 +1,7 @@
+aggregator:
+    kafka:
+        consumer:
+        poll-timeout: 100m
+
+server:
+    port: 8090
