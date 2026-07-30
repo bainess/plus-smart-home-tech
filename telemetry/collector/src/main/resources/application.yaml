@@ -1,14 +1,24 @@
-server:
-  port: 8080
-
 spring:
-  kafka:
-    bootstrap-servers: localhost:9092
+  application:
+    name: collector
+  config:
+    import: configserver:http://localhost:8888
 
-#    producer:
-#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-
-logging:
-  level:
-    org.apache.kafka: INFO
+#server:
+#  port: 8080
+#
+#spring:
+#  kafka:
+#    bootstrap-servers: localhost:9092
+#
+##    producer:
+##      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+##      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#
+#logging:
+#  level:
+#    org.apache.kafka: INFO
+#
+#grpc:
+#  server:
+#    port: 59091

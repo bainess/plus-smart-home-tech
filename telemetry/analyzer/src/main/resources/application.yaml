@@ -1,0 +1,32 @@
+#grpc:
+#  client:
+#    hub-router:
+#      address: 'static://localhost:59090'
+#      enableKeepAlive: true
+#      keepAliveWithoutCalls: true
+#      negotiationType: plaintext
+
+spring:
+  application:
+    name: analyzer
+  config:
+    import: configserver:http://localhost:8888
+#
+#  datasource:
+#    url: ${ANALYZER_POSTGRES_URL:jdbc:postgresql://localhost:5433/smarthome}
+#    username: postgres
+#    password: 12345
+#    driver-class-name: org.postgresql.Driver
+#
+#  sql:
+#    init:
+#      mode: never
+#      continue-on-error: true
+#
+#  jpa:
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+#  kafka:
+#    bootstrap-servers: localhost:9092

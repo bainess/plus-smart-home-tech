@@ -1,4 +1,5 @@
-package ru.practicum.telemetry.collector.configuration;
+package telemetry;
+
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.io.BinaryEncoder;

@@ -2,9 +2,7 @@ package ru.practicum.telemetry.collector.model.hub;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.Instant;
 
@@ -23,10 +21,13 @@ import java.time.Instant;
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public abstract class HubEvent {
     private String hubId;
     private Instant timestamp;
     private String type;
+
 
     public abstract HubEventType getType();
 }
