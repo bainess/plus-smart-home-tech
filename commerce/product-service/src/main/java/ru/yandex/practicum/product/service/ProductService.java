@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.product.dto.CreateProductRequest;
 import ru.yandex.practicum.product.dto.ProductDto;
+import ru.yandex.practicum.product.dto.UpdateProductRequest;
 import ru.yandex.practicum.product.entity.Category;
 import ru.yandex.practicum.product.entity.Product;
 import ru.yandex.practicum.product.exception.NotFoundException;
@@ -37,7 +38,7 @@ public class ProductService {
     }
 
     public List<ProductDto> getProductsByName(String name) {
-        List<Product> products = productRepository.findAllByName(name);
+        List<Product> products = productRepository.findAllByNameContaining(name);
         return products.stream().map(ProductMapper::mapToProductDto).toList();
     }
 
@@ -50,5 +51,18 @@ public class ProductService {
         return ProductMapper.mapToProductDto(product);
     }
 
+    public ProductDto updateProduct(Long id, UpdateProductRequest request) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Product " + request.categoryId() + "not found"));
+        ProductMapper.updateProduct(request, product);
 
+        if (request.categoryId() != null) {
+            Category category = categoryRepository.findById(request.categoryId())
+                    .orElseThrow(() -> new NotFoundException("Product " + request.categoryId() + "not found"));
+            product.setCategory(category);
+        }
+
+        product = productRepository.save(product);
+        return ProductMapper.mapToProductDto(product);
+    }
 }

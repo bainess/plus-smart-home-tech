@@ -1,5 +1,6 @@
 package ru.yandex.practicum.product.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -24,13 +25,13 @@ public class CategoryController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CategoryDto getCategoryById(@RequestParam("id") Long id) {
+    public CategoryDto getCategoryById(@PathVariable("id") Long id) {
         return categoryService.getCategoryById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CategoryDto createCategory(CreateCategoryRequest request) {
+    public CategoryDto createCategory(@RequestBody @Valid CreateCategoryRequest request) {
         return categoryService.createCategory(request);
     }
 }

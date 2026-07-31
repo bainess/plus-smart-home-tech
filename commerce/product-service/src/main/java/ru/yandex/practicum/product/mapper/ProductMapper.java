@@ -44,8 +44,12 @@ public class ProductMapper {
             product.setPrice(request.price());
         }
 
-        if (request.categoryId() != null) {
+        if (request.imageUrl() != null) {
+            product.setImageUrl(request.imageUrl());
+        }
 
+        if (request.active() != null) {
+            product.setActive(request.active());
         }
     }
 }
