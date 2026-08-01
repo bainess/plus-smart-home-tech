@@ -1,4 +1,21 @@
 package ru.yandex.practicum.product.dto;
 
-public class ProductDto {
+import java.math.BigDecimal;
+
+public record ProductDto(
+
+        Long id,
+
+        String name,
+
+        String description,
+
+        BigDecimal price,
+
+        CategoryDto category,
+
+        String imageUrl,
+
+        Boolean active
+) {
 }

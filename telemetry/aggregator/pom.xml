@@ -24,12 +24,11 @@
             <scope>compile</scope>
         </dependency>
 
-<!--        Discover Client -->
+        <!--        Discover Client -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
-
 
 
         <dependency>

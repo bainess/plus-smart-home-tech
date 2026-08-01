@@ -1,4 +1,11 @@
 package ru.yandex.practicum.product.dto;
 
-public class CategoryDto {
+public record CategoryDto(
+
+        Long id,
+
+        String name,
+
+        String description
+) {
 }
