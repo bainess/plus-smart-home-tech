@@ -76,3 +76,33 @@ services:
       timeout: 5s
       retries: 10
       start_period: 15s
+
+  inventory-db:
+    image: postgres:16.1
+    container_name: inventory-db
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_DB: inventory_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+
+  order-db:
+    image: postgres:16.1
+    container_name: order-db
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_DB: order_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+
+  product-db:
+    image: postgres:16.1
+    container_name: product-db
+    ports:
+      - "5436:5432"
+    environment:
+      POSTGRES_DB: product_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
