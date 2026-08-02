@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: config-server
+  config:
+    import: optional:configserver:http://localhost:8888
   profiles:
     active: native
   cloud:
