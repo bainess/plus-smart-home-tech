@@ -1,7 +1,5 @@
 package ru.yandex.practicum.order.dto;
 
-import jakarta.validation.constraints.NotNull;
-
 import java.math.BigDecimal;
 
 public record OrderItemDto(

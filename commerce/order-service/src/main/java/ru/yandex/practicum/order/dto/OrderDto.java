@@ -1,7 +1,5 @@
 package ru.yandex.practicum.order.dto;
 
-import jakarta.validation.constraints.NotBlank;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
