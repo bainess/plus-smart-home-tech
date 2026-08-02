@@ -20,17 +20,22 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(name = "name")
     String name;
 
+    @Column(name = "description")
     String description;
 
+    @Column(name = "price")
     BigDecimal price;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
     Category category;
 
+    @Column(name = "image_url")
     String imageUrl;
 
+    @Column(name = "active")
     Boolean active;
 }
