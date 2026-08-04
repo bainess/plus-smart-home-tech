@@ -41,16 +41,20 @@ public class OrderOrchestrationService {
             try {
                 ProductDto product = productClient.getProductById(item.productId());
 
-
-
-            ReserveRequest reserveRequest = new ReserveRequest(item.productId(), item.quantity());
-            ReserveResponse reserve = inventoryClient.reserveStock(reserveRequest);
-            reservedProducts.add(reserve);
-            } catch (OrderProcessingException e) {
+                if (!product.active()) {
+                    throw new OrderProcessingException("Product cannot be purchased");
+                }
+                    try {
+                        ReserveRequest reserveRequest = new ReserveRequest(item.productId(), item.quantity());
+                        ReserveResponse reserve = inventoryClient.reserveStock(reserveRequest);
+                        reservedProducts.add(reserve);
+                    }  catch (FeignException e) {
                 reservedProducts.forEach(inventoryClient::releaseStock);
-                log.error("Error while processing order {}", e.getMessage());
+                    throw mapInventoryException(e, item.productId());
             }
-
+            } catch (FeignException e) {
+                throw mapProductException(e, item.productId());
+            }
         }
         return orderService.createOrder(request);
     }
