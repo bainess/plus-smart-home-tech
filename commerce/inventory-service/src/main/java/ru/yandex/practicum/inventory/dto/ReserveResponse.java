@@ -6,6 +6,8 @@ public record ReserveResponse(
 
         Integer availableQuantity,
 
-        String message
+        String message,
+
+        Long reservationId
 ) {
 }
