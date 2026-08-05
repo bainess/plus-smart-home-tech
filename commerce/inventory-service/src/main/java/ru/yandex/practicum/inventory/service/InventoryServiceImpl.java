@@ -62,11 +62,18 @@ public class InventoryServiceImpl implements InventoryService{
         log.info("Inventory before reservation {}, available {}", inventory, inventory.getAvailableQuantity());
         if (inventory.getAvailableQuantity() - request.quantity() >= 0) {
             inventory.setReservedQuantity(inventory.getReservedQuantity() + request.quantity());
-            inventoryRepository.save(inventory);
+            inventory = inventoryRepository.save(inventory);
         } else {
             throw  new InsufficientStockException("Product " + inventory.getProductId() + " is not enough to reserve");
         }
         log.info("Inventory after reservation {}, available {}", inventory, inventory.getAvailableQuantity());
-        return new ReserveResponse(true, inventory.getAvailableQuantity(), "success");
+        return new ReserveResponse(true, inventory.getAvailableQuantity(), "success", inventory.getId());
+    }
+
+    @Override
+    public void releaseReserve(ReserveResponse response) {
+        Inventory inventory = inventoryRepository.findById(response.reservationId())
+                .orElseThrow(() -> new NotFoundException("Reservation " + response.reservationId() + " was not found"));
+        inventoryRepository.delete(inventory);
     }
 }

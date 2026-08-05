@@ -20,4 +20,6 @@ public interface InventoryService {
     InventoryDto updateInventory(UpdateInventoryRequest request);
 
     ReserveResponse reserveProduct(ReserveRequest request);
+
+    void releaseReserve(ReserveResponse request);
 }

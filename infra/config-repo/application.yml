@@ -2,6 +2,13 @@ spring:
   main:
     banner-mode: off
     log-startup-info: false
+  cloud:
+    openfeign:
+      client:
+        config:
+          default: # применяется по умолчанию для всех клиентов
+            connectTimeout: 2000
+            readTimeout: 3000
 
 logging:
   level:
@@ -9,6 +16,7 @@ logging:
     org:
     springframework: ERROR
     apache.kafka: WARN
+    ru.yandex.practicum.order.feign.InventoryClient: DEBUG
 
 kafka:
   bootstrap-servers: "localhost: 9092"

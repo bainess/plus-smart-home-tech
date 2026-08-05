@@ -23,16 +23,22 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(name = "customer_name")
     String customerName;
 
+    @Column(name = "customer_email")
     String customerEmail;
 
+    @Column(name = "status")
     String status;
 
+    @Column(name = "total_price")
     BigDecimal totalPrice;
 
+    @Column(name = "status_details")
     String statusDetails;
 
+    @Column(name = "created_at")
     LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "order",
