@@ -6,11 +6,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.order.dto.CreateOrderRequest;
 import ru.yandex.practicum.order.dto.OrderDto;
-import ru.yandex.practicum.order.dto.OrderItemRequest;
 import ru.yandex.practicum.order.entity.Order;
-import ru.yandex.practicum.order.entity.OrderItem;
+import ru.yandex.practicum.order.entity.Status;
 import ru.yandex.practicum.order.exception.NotFoundException;
-import ru.yandex.practicum.order.feign.*;
+import ru.yandex.practicum.order.feign.client.InventoryClient;
+import ru.yandex.practicum.order.feign.client.ProductClient;
+import ru.yandex.practicum.order.feign.model.Pending_Reason;
 import ru.yandex.practicum.order.mapper.OrderMapper;
 import ru.yandex.practicum.order.repository.OrderRepository;
 
@@ -27,13 +28,29 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderDto createOrder(CreateOrderRequest request) {
+    public OrderDto createConfirmedOrder(CreateOrderRequest request) {
 
         Order order = OrderMapper.mapToOrder(request);
 
         order.setTotalPrice(order.getItems().stream()
                 .map(orderItem -> orderItem.getPrice().multiply(BigDecimal.valueOf(orderItem.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
+        order.setStatus(Status.CONFIRMED);
+        order = orderRepository.save(order);
+        return OrderMapper.mapToOrderDto(order);
+    }
+
+    @Override
+    @Transactional
+    public OrderDto createPendingOrder(CreateOrderRequest request, Pending_Reason degraded_reason) {
+
+        Order order = OrderMapper.mapToOrder(request);
+
+        order.setTotalPrice(order.getItems().stream()
+                .map(orderItem -> orderItem.getPrice().multiply(BigDecimal.valueOf(orderItem.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add));
+        order.setStatus(Status.PENDING_CONFIRMATION);
+        order.setStatusDetails(degraded_reason);
         order = orderRepository.save(order);
         return OrderMapper.mapToOrderDto(order);
     }

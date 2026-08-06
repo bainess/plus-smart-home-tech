@@ -12,6 +12,11 @@ import ru.yandex.practicum.order.dto.CreateOrderRequest;
 import ru.yandex.practicum.order.dto.OrderDto;
 import ru.yandex.practicum.order.dto.OrderItemRequest;
 import ru.yandex.practicum.order.exception.OrderProcessingException;
+import ru.yandex.practicum.order.feign.client.InventoryClient;
+import ru.yandex.practicum.order.feign.client.ProductClient;
+import ru.yandex.practicum.order.feign.model.ProductDto;
+import ru.yandex.practicum.order.feign.model.ReserveRequest;
+import ru.yandex.practicum.order.feign.model.ReserveResponse;
 import ru.yandex.practicum.order.service.OrderService;
 
 import java.math.BigDecimal;
@@ -66,7 +71,7 @@ class OrderOrchestrationServiceTest {
         );
 
         ReserveResponse reserve =
-                new ReserveResponse(true, 10, "reserved");
+                new ReserveResponse(true, 10, 1L,"reserved");
 
         OrderDto order = mock(OrderDto.class);
 
@@ -76,7 +81,7 @@ class OrderOrchestrationServiceTest {
         when(inventoryClient.reserveStock(any()))
                 .thenReturn(reserve);
 
-        when(orderService.createOrder(request))
+        when(orderService.createConfirmedOrder(request))
                 .thenReturn(order);
 
         OrderDto result = orchestrationService.createOrder(request);
@@ -85,7 +90,7 @@ class OrderOrchestrationServiceTest {
 
         verify(productClient).getProductById(1L);
         verify(inventoryClient).reserveStock(any());
-        verify(orderService).createOrder(request);
+        verify(orderService).createConfirmedOrder(request);
         verify(inventoryClient, never()).releaseStock(any());
     }
 
@@ -111,9 +116,9 @@ class OrderOrchestrationServiceTest {
                 ));
 
         when(inventoryClient.reserveStock(any()))
-                .thenReturn(new ReserveResponse(true, 5, "ok"));
+                .thenReturn(new ReserveResponse(true, 5, 1L, "ok"));
 
-        when(orderService.createOrder(any()))
+        when(orderService.createConfirmedOrder(any()))
                 .thenReturn(mock(OrderDto.class));
 
         orchestrationService.createOrder(duplicated);
@@ -151,7 +156,7 @@ class OrderOrchestrationServiceTest {
                 .reserveStock(any());
 
         verify(orderService, never())
-                .createOrder(any());
+                .createConfirmedOrder(any());
     }
 
     @Test
@@ -177,7 +182,7 @@ class OrderOrchestrationServiceTest {
                 .hasMessageContaining("Недостаточно товара");
 
         verify(orderService, never())
-                .createOrder(any());
+                .createConfirmedOrder(any());
 
         verify(inventoryClient, never())
                 .releaseStock(any());
