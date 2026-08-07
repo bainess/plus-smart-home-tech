@@ -116,37 +116,37 @@
         }
 
 
-    private OrderProcessingException mapProductException(FeignException exception,
-                                                         Long productId) {
-        if (exception.status() == 404) {
-            return new OrderProcessingException(
-                    "Товар с id=%d не найден".formatted(productId)
-            );
-        }
-
-        return new OrderProcessingException(
-                "Не удалось получить данные товара"
-        );
-    }
-
-    private OrderProcessingException mapInventoryException(FeignException exception,
-                                                           Long productId) {
-        if (exception.status() == 404) {
-            return new OrderProcessingException(
-                    "Складская запись для товара id=%d не найдена".formatted(productId)
-            );
-        }
-
-        if (exception.status() == 409) {
-            return new OrderProcessingException(
-                    "Недостаточно товара id=%d на складе".formatted(productId)
-            );
-        }
-
-        return new OrderProcessingException(
-                "Не удалось зарезервировать товар"
-        );
-    }
+//    private OrderProcessingException mapProductException(FeignException exception,
+//                                                         Long productId) {
+//        if (exception.status() == 404) {
+//            return new OrderProcessingException(
+//                    "Товар с id=%d не найден".formatted(productId)
+//            );
+//        }
+//
+//        return new OrderProcessingException(
+//                "Не удалось получить данные товара"
+//        );
+//    }
+//
+//    private OrderProcessingException mapInventoryException(FeignException exception,
+//                                                           Long productId) {
+//        if (exception.status() == 404) {
+//            return new OrderProcessingException(
+//                    "Складская запись для товара id=%d не найдена".formatted(productId)
+//            );
+//        }
+//
+//        if (exception.status() == 409) {
+//            return new OrderProcessingException(
+//                    "Недостаточно товара id=%d на складе".formatted(productId)
+//            );
+//        }
+//
+//        return new OrderProcessingException(
+//                "Не удалось зарезервировать товар"
+//        );
+//    }
 
     private RemoteCallResult<ProductDto> getProduct(Long productId) {
         try {
