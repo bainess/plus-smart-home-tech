@@ -1,10 +1,8 @@
 package ru.yandex.practicum.order.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import ru.yandex.practicum.order.feign.model.Pending_Reason;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -31,15 +29,13 @@ public class Order {
     String customerEmail;
 
     @Column(name = "status")
-    @Enumerated(EnumType.STRING)
-    Status status;
+    String status;
 
     @Column(name = "total_price")
     BigDecimal totalPrice;
 
     @Column(name = "status_details")
-    @Enumerated(EnumType.STRING)
-    Pending_Reason statusDetails;
+    String statusDetails;
 
     @Column(name = "created_at")
     LocalDateTime createdAt;

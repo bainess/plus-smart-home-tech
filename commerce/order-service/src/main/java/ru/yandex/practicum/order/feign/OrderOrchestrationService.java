@@ -35,6 +35,7 @@
         private final InventoryClient inventoryClient;
 
         public OrderDto createOrder(CreateOrderRequest request) {
+            log.info("Вход через оркестратор создание заказа {}", request);
             List<ReserveResponse> reservedProducts = new ArrayList<>();
             List<ProductDto> productFailedToSend = new ArrayList<>();
 
@@ -50,12 +51,12 @@
 
             boolean degraded = false;
             Pending_Reason degradedReason = null;
-
+            ProductDto product = null;
             try {
                 for (OrderItemRequest item : productsRequest.values()) {
 
                     RemoteCallResult<ProductDto> productCallResult = getProduct(item.productId());
-                    ProductDto product;
+                    
 
                     switch (productCallResult) {
                         case RemoteCallResult.Success<ProductDto> success -> {
@@ -109,9 +110,9 @@
             }
 
             if (degraded) {
-                return orderService.createPendingOrder(request, degradedReason);
+                return orderService.createPendingOrder(request, product, degradedReason);
             }
-            return orderService.createConfirmedOrder(request);
+            return orderService.createConfirmedOrder(request, product);
         }
 
 

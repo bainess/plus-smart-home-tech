@@ -29,6 +29,12 @@ resilience4j:
       default:
         sliding-window-size: 5
         failure-rate-threshold: 50
+    instances:
+      product-service:
+        base-config: default
+
+      inventory-service:
+        base-config: default
         wait-duration-in-open-state: 10s
         permitted-number-of-calls-in-half-open-state: 3
   timelimiter:

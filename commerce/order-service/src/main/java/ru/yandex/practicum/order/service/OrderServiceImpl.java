@@ -2,6 +2,7 @@ package ru.yandex.practicum.order.service;
 
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.order.dto.CreateOrderRequest;
@@ -12,12 +13,14 @@ import ru.yandex.practicum.order.exception.NotFoundException;
 import ru.yandex.practicum.order.feign.client.InventoryClient;
 import ru.yandex.practicum.order.feign.client.ProductClient;
 import ru.yandex.practicum.order.feign.model.Pending_Reason;
+import ru.yandex.practicum.order.feign.model.ProductDto;
 import ru.yandex.practicum.order.mapper.OrderMapper;
 import ru.yandex.practicum.order.repository.OrderRepository;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
@@ -28,29 +31,33 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderDto createConfirmedOrder(CreateOrderRequest request) {
-
-        Order order = OrderMapper.mapToOrder(request);
+    public OrderDto createConfirmedOrder(CreateOrderRequest request, ProductDto product) {
+        log.info("Start order for request " + request);
+        Order order = OrderMapper.mapToOrder(request, product);
 
         order.setTotalPrice(order.getItems().stream()
                 .map(orderItem -> orderItem.getPrice().multiply(BigDecimal.valueOf(orderItem.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
-        order.setStatus(Status.CONFIRMED);
+        log.info("Order mapped: " + order);
+        order.setStatus(Status.CONFIRMED.toString());
         order = orderRepository.save(order);
-        return OrderMapper.mapToOrderDto(order);
+
+        OrderDto o = OrderMapper.mapToOrderDto(order);
+        log.info("Order saved: {}",o);
+        return o;
     }
 
     @Override
     @Transactional
-    public OrderDto createPendingOrder(CreateOrderRequest request, Pending_Reason degraded_reason) {
+    public OrderDto createPendingOrder(CreateOrderRequest request, ProductDto product, Pending_Reason degraded_reason) {
 
-        Order order = OrderMapper.mapToOrder(request);
+        Order order = OrderMapper.mapToOrder(request, product);
 
         order.setTotalPrice(order.getItems().stream()
                 .map(orderItem -> orderItem.getPrice().multiply(BigDecimal.valueOf(orderItem.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
-        order.setStatus(Status.PENDING_CONFIRMATION);
-        order.setStatusDetails(degraded_reason);
+        order.setStatus(Status.PENDING_CONFIRMATION.toString());
+        order.setStatusDetails(degraded_reason.toString());
         order = orderRepository.save(order);
         return OrderMapper.mapToOrderDto(order);
     }

@@ -6,6 +6,7 @@ import ru.yandex.practicum.order.dto.OrderItemDto;
 import ru.yandex.practicum.order.dto.OrderItemRequest;
 import ru.yandex.practicum.order.entity.Order;
 import ru.yandex.practicum.order.entity.OrderItem;
+import ru.yandex.practicum.order.feign.model.ProductDto;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class OrderMapper {
         return  dto;
     }
 
-    public static Order mapToOrder(CreateOrderRequest request) {
+    public static Order mapToOrder(CreateOrderRequest request, ProductDto product) {
         Order order = Order.builder()
                 .customerName(request.customerName())
                 .customerEmail(request.customerEmail())
@@ -49,18 +50,18 @@ public class OrderMapper {
                 .build();
 
         for (OrderItemRequest orderItemRequest : request.items()) {
-            OrderItem orderItem = OrderMapper.mapToOrderItem(orderItemRequest);
+            OrderItem orderItem = OrderMapper.mapToOrderItem(orderItemRequest, product);
             order.getItems().add(orderItem);
         }
         return order;
     }
 
-    private static OrderItem mapToOrderItem(OrderItemRequest request) {
+    private static OrderItem mapToOrderItem(OrderItemRequest request, ProductDto productDto) {
         OrderItem orderItem = OrderItem.builder()
                 .productId(request.productId())
-                .productName(request.productName())
+                .productName(productDto.name())
                 .quantity(request.quantity())
-                .price(request.price()).build();
+                .price(productDto.price()).build();
         return orderItem;
     }
 }
