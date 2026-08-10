@@ -21,6 +21,7 @@
 
     import java.math.BigDecimal;
     import java.util.ArrayList;
+    import java.util.HashMap;
     import java.util.List;
     import java.util.Map;
     import java.util.function.Function;
@@ -35,6 +36,7 @@
         private final InventoryClient inventoryClient;
 
         public OrderDto createOrder(CreateOrderRequest request) {
+            log.info("Incoming order request {}", request);
             log.info("Вход через оркестратор создание заказа {}", request);
             List<ReserveResponse> reservedProducts = new ArrayList<>();
             List<ProductDto> productFailedToSend = new ArrayList<>();
@@ -52,20 +54,21 @@
             boolean degraded = false;
             Pending_Reason degradedReason = null;
             ProductDto product = null;
+            Map<Long, ProductDto> products = new HashMap<>();
             try {
                 for (OrderItemRequest item : productsRequest.values()) {
 
                     RemoteCallResult<ProductDto> productCallResult = getProduct(item.productId());
-                    
+
 
                     switch (productCallResult) {
                         case RemoteCallResult.Success<ProductDto> success -> {
                              product = success.value();
-                            if (!product.active()) {
 
+                            if (!product.active()) {
                                 throw new OrderProcessingException("Product cannot be purchased");
                             }
-
+                            products.put(item.productId(), product);
                         }
                         case RemoteCallResult.BusinessFailure<ProductDto> failure -> {
                                 throw new OrderProcessingException(failure.message());
@@ -110,9 +113,9 @@
             }
 
             if (degraded) {
-                return orderService.createPendingOrder(request, product, degradedReason);
+                return orderService.createPendingOrder(request, products, degradedReason);
             }
-            return orderService.createConfirmedOrder(request, product);
+            return orderService.createConfirmedOrder(request, products);
         }
 
 

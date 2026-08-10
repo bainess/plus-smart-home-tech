@@ -30,7 +30,9 @@ public class OrderController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public OrderDto getOrderById(@PathVariable("id") Long id) {
-        return orderService.getOrder(id);
+        OrderDto order = orderService.getOrder(id);
+        log.info("Showing order {}: {}", id, order);
+        return order;
     }
 
     @GetMapping
@@ -42,6 +44,8 @@ public class OrderController {
     @GetMapping("/by-email")
     @ResponseStatus(HttpStatus.OK)
     public List<OrderDto> getOrdersByCustomerEmail(@RequestParam("email") String email) {
-        return orderService.getOrdersByCustomerEmail(email);
+        List<OrderDto> orders = orderService.getOrdersByCustomerEmail(email);
+        log.info("List of orders by email {}: {}", email, orders);
+        return orders;
     }
 }

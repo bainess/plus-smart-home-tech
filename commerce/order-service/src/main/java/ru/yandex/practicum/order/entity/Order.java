@@ -45,4 +45,8 @@ public class Order {
             orphanRemoval = true)
     List<OrderItem> items = new ArrayList<>();
 
+    public void addItem(OrderItem item) {
+        items.add(item);
+        item.setOrder(this);
+    }
 }

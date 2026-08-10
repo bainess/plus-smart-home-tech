@@ -12,8 +12,8 @@ import java.math.BigDecimal;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(exclude = "order")
+@ToString(exclude = "order")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class OrderItem {
@@ -24,7 +24,7 @@ public class OrderItem {
     @Column(name = "product_id")
     Long productId;
 
-    @Column(name = "productName")
+    @Column(name = "product_name")
     String productName;
 
     @Column(name = "quantity")

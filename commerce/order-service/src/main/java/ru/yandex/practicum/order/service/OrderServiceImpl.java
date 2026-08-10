@@ -19,6 +19,7 @@ import ru.yandex.practicum.order.repository.OrderRepository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -31,9 +32,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderDto createConfirmedOrder(CreateOrderRequest request, ProductDto product) {
+    public OrderDto createConfirmedOrder(CreateOrderRequest request, Map<Long, ProductDto> products) {
         log.info("Start order for request " + request);
-        Order order = OrderMapper.mapToOrder(request, product);
+        Order order = OrderMapper.mapToOrder(request, products);
 
         order.setTotalPrice(order.getItems().stream()
                 .map(orderItem -> orderItem.getPrice().multiply(BigDecimal.valueOf(orderItem.getQuantity())))
@@ -49,9 +50,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderDto createPendingOrder(CreateOrderRequest request, ProductDto product, Pending_Reason degraded_reason) {
+    public OrderDto createPendingOrder(CreateOrderRequest request, Map<Long,ProductDto> products, Pending_Reason degraded_reason) {
 
-        Order order = OrderMapper.mapToOrder(request, product);
+        Order order = OrderMapper.mapToOrder(request, products);
 
         order.setTotalPrice(order.getItems().stream()
                 .map(orderItem -> orderItem.getPrice().multiply(BigDecimal.valueOf(orderItem.getQuantity())))
@@ -78,6 +79,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDto> getOrdersByCustomerEmail(String customerEmail) {
         List<Order> orders = orderRepository.findAllByCustomerEmail(customerEmail);
+        log.info("Orders from service by email {} orders: {}", customerEmail, orders);
         return orders.stream().map(OrderMapper::mapToOrderDto).toList();
     }
 }
