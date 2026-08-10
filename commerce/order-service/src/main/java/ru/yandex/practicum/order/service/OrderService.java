@@ -6,12 +6,13 @@ import ru.yandex.practicum.order.feign.model.Pending_Reason;
 import ru.yandex.practicum.order.feign.model.ProductDto;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface OrderService {
-    OrderDto createConfirmedOrder(CreateOrderRequest request, ProductDto product);
+    OrderDto createConfirmedOrder(CreateOrderRequest request, Map<Long, ProductDto> product);
 
-    OrderDto createPendingOrder(CreateOrderRequest request,  ProductDto product, Pending_Reason degraded_reason);
+    OrderDto createPendingOrder(CreateOrderRequest request,  Map<Long, ProductDto> products, Pending_Reason degraded_reason);
 
     OrderDto getOrder(Long id);
 

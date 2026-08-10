@@ -11,6 +11,7 @@ import ru.yandex.practicum.order.feign.model.ProductDto;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class OrderMapper {
 
@@ -40,7 +41,7 @@ public class OrderMapper {
         return  dto;
     }
 
-    public static Order mapToOrder(CreateOrderRequest request, ProductDto product) {
+    public static Order mapToOrder(CreateOrderRequest request, Map<Long, ProductDto> products) {
         Order order = Order.builder()
                 .customerName(request.customerName())
                 .customerEmail(request.customerEmail())
@@ -50,8 +51,10 @@ public class OrderMapper {
                 .build();
 
         for (OrderItemRequest orderItemRequest : request.items()) {
-            OrderItem orderItem = OrderMapper.mapToOrderItem(orderItemRequest, product);
-            order.getItems().add(orderItem);
+           ProductDto product = products.get(orderItemRequest.productId());
+
+            OrderItem orderItem = mapToOrderItem(orderItemRequest, product);
+            order.addItem(orderItem);
         }
         return order;
     }
