@@ -38,7 +38,7 @@ public class OrderMapper {
                 orderItem.getPrice()
 
         );
-        return  dto;
+        return dto;
     }
 
     public static Order mapToOrder(CreateOrderRequest request, Map<Long, ProductDto> products) {
@@ -51,8 +51,7 @@ public class OrderMapper {
                 .build();
 
         for (OrderItemRequest orderItemRequest : request.items()) {
-           ProductDto product = products.get(orderItemRequest.productId());
-
+            ProductDto product = products.get(orderItemRequest.productId());
             OrderItem orderItem = mapToOrderItem(orderItemRequest, product);
             order.addItem(orderItem);
         }
