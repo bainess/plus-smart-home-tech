@@ -57,6 +57,42 @@ public class SecurityRulesTest {
     }
 
     @Test
+    void writeCategory_asUser_isForbidden() {
+        webTestClient.patch()
+                .uri("/api/categories/10")
+                .headers(headers -> headers.setBasicAuth("ivan", "ivan"))
+                .exchange()
+                .expectStatus().isForbidden();
+    }
+
+    @Test
+    void getOrderByEmail_asUser_isAllowed() {
+        webTestClient.patch()
+                .uri("/api/orders/by-email?ivan@example.com")
+                .headers(headers -> headers.setBasicAuth("ivan", "ivan"))
+                .exchange()
+                .expectStatus().isOk();
+    }
+
+    @Test
+    void getOrders_asUser_isForbidden() {
+        webTestClient.patch()
+                .uri("/api/orders")
+                .headers(headers -> headers.setBasicAuth("ivan", "ivan"))
+                .exchange()
+                .expectStatus().isForbidden();
+    }
+
+    @Test
+    void getOrders_asAdmin_isAllowed() {
+        webTestClient.patch()
+                .uri("/api/orders")
+                .headers(headers -> headers.setBasicAuth("anna", "anna"))
+                .exchange()
+                .expectStatus().isOk();
+    }
+
+    @Test
     void getProduct_asUser_isAvailable() {
         webTestClient.get()
                 .uri("/api/products")
